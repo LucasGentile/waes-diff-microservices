@@ -2,9 +2,7 @@
 
 ## Main Technologies:
 
-Java 11
-Gradle
-Spring Boot 2.2.5
+Java 11 | Gradle | Spring Boot 2.2.5
 
 * discovery-service
   * Eureka Server
