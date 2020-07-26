@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.DatatypeConverter;
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ public class DiffService {
      * @param diffData Diff object to be saved
      * @return Saved Diff data object
      */
-    @Transactional
     public DiffData save(Long id, DiffData diffData) {
         Diff diff = diffRepository.findById(id).orElse(null);
 
@@ -45,10 +43,11 @@ public class DiffService {
 
         if (diffData.getLeftSide() != null) {
             diff.setLeftSide(diffData.getLeftSide());
-        } else if (diffData.getRightSide() != null) {
-            diff.setRightSide(diffData.getRightSide());
         }
 
+        if (diffData.getRightSide() != null) {
+            diff.setRightSide(diffData.getRightSide());
+        }
         return DiffDataConverter.convert(diffRepository.save(diff));
     }
 

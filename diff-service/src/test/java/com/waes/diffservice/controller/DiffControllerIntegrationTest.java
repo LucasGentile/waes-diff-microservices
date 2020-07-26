@@ -1,6 +1,7 @@
-package com.waes.diffservice;
+package com.waes.diffservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.waes.diffservice.DiffServiceApplication;
 import com.waes.diffservice.data.DiffData;
 import com.waes.diffservice.enums.DiffType;
 import io.restassured.builder.RequestSpecBuilder;
@@ -12,7 +13,6 @@ import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
@@ -24,12 +24,12 @@ import static com.waes.diffservice.utils.TestUtils.*;
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        webEnvironment = RANDOM_PORT,
         classes = DiffServiceApplication.class)
-@AutoConfigureMockMvc
 @TestPropertySource(
         locations = "classpath:application-integrationtest.properties")
 public class DiffControllerIntegrationTest {
@@ -50,12 +50,12 @@ public class DiffControllerIntegrationTest {
         DiffData diffDataWithLeftContent = createDiffData(diffId, encodeBase64String("testLeft"), null);
 
         // when executing the post endpoint to save the DiffData containing the LEFT side content, then the status should be CREATED.
-        apiPost(diffDataWithLeftContent).then().assertThat().statusCode(HttpStatus.SC_CREATED);
+        Response response = apiPost(diffDataWithLeftContent);
+        response.then().assertThat().statusCode(HttpStatus.SC_CREATED);
+        DiffData savedDto = stringJsonToDiffData(response.getBody().asString());
 
         // and the saved DiffData should contain the left content of the respective id
-        DiffData savedDto = stringJsonToDiffData(apiGetDiff(diffId).getBody().asString());
         assertEquals(diffDataWithLeftContent.getLeftSide(), savedDto.getLeftSide());
-        assertEquals(diffId, savedDto.getId());
     }
 
     @Test
@@ -65,16 +65,17 @@ public class DiffControllerIntegrationTest {
         DiffData diffDataWithRightContent = createDiffData(diffId, null, encodeBase64String("testRight"));
 
         // when executing the post endpoint to save the DiffData containing the RIGHT side content, then the status should be CREATED.
-        apiPost(diffDataWithRightContent).then().assertThat().statusCode(HttpStatus.SC_CREATED);
+        Response response = apiPost(diffDataWithRightContent);
+        response.then().assertThat().statusCode(HttpStatus.SC_CREATED);
+        DiffData savedDto = stringJsonToDiffData(response.getBody().asString());
 
         // and the saved DiffData should contain the left content of the respective id
-        DiffData savedDto = stringJsonToDiffData(apiGetDiff(diffId).getBody().asString());
         assertEquals(diffDataWithRightContent.getRightSide(), savedDto.getRightSide());
     }
 
 
     @Test
-    public void executeRunDifferentiatior_RightAndLeftSideNotNull_success() throws IOException {
+    public void executeRunDifferentiator_RightAndLeftSideNotNull_success() throws IOException {
         // given an id, from a DiffData with LEFT and RIGHT sides
         Long diffId = getRandomId();
         DiffData data = createDiffData(diffId, encodeBase64String("testLeft"), encodeBase64String("testRight"));
@@ -85,7 +86,7 @@ public class DiffControllerIntegrationTest {
         assertEquals(HttpStatus.SC_OK, response.getStatusCode());
 
 
-        // and the result should contain the DiffData diff-ed, the ResulType and Insights
+        // and the result should contain the DiffData diff-ed, the ResultType and Insights
         DiffData dataResult = stringJsonToDiffResultDTO(response.getBody().asString());
         assertEquals(data.getLeftSide(), dataResult.getLeftSide());
         assertEquals(data.getRightSide(), dataResult.getRightSide());

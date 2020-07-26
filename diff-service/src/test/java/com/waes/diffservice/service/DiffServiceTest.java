@@ -1,18 +1,15 @@
-package com.waes.diffservice;
+package com.waes.diffservice.service;
 
 import com.waes.diffservice.data.DiffData;
 import com.waes.diffservice.enums.DiffType;
 import com.waes.diffservice.model.Diff;
 import com.waes.diffservice.repository.DiffRepository;
-import com.waes.diffservice.service.DiffService;
 import javassist.NotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
 
@@ -22,36 +19,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 /**
- * Test classes naming patter:
- *     methodCalled_input_output
- *
+ * Test classes naming pattern:
+ * methodCalled_input_output
  */
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class DiffServiceTest {
 
-    @TestConfiguration
-    static class DiffServiceTestContextConfiguration {
-
-        @Bean
-        public DiffService diffService() {
-            return new DiffService();
-        }
-
-    }
-
-    @Autowired
+    @InjectMocks
     private DiffService diffService;
 
-    @MockBean
+    @Mock
     private DiffRepository diffRepository;
 
     @Test(expected = NotFoundException.class)
     public void executeGetDiff_DiffNotFound_NotFoundException() throws Exception {
-        Long diffId = getRandomId();
-
-        when(diffRepository.getOne(diffId)).thenReturn(null);
-
-        diffService.getDiff(diffId);
+        diffService.getDiff(getRandomId());
     }
 
     @Test(expected = NotFoundException.class)
