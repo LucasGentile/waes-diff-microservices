@@ -6,7 +6,6 @@ import com.waes.diffservice.enums.DiffType;
 import com.waes.diffservice.model.Diff;
 import com.waes.diffservice.repository.DiffRepository;
 import javassist.NotFoundException;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +20,15 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@AllArgsConstructor
 @NoArgsConstructor
 public class DiffService {
 
-    @Autowired
     private DiffRepository diffRepository;
+
+    @Autowired
+    public DiffService(DiffRepository diffRepository) {
+        this.diffRepository = diffRepository;
+    }
 
     /**
      * @param id       Diff id

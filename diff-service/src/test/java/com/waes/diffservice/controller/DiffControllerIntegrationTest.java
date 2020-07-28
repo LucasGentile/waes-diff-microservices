@@ -49,13 +49,11 @@ public class DiffControllerIntegrationTest {
         Long diffId = getRandomId();
         DiffData diffDataWithLeftContent = createDiffData(diffId, encodeBase64String("testLeft"), null);
 
-        // when executing the post endpoint to save the DiffData containing the LEFT side content, then the status should be CREATED.
+        // when executing the post endpoint to save the DiffData containing the LEFT side content
         Response response = apiPost(diffDataWithLeftContent);
-        response.then().assertThat().statusCode(HttpStatus.SC_CREATED);
-        DiffData savedDto = stringJsonToDiffData(response.getBody().asString());
 
-        // and the saved DiffData should contain the left content of the respective id
-        assertEquals(diffDataWithLeftContent.getLeftSide(), savedDto.getLeftSide());
+        // then the status should be CREATED.
+        response.then().assertThat().statusCode(HttpStatus.SC_CREATED);
     }
 
     @Test
@@ -64,15 +62,12 @@ public class DiffControllerIntegrationTest {
         Long diffId = getRandomId();
         DiffData diffDataWithRightContent = createDiffData(diffId, null, encodeBase64String("testRight"));
 
-        // when executing the post endpoint to save the DiffData containing the RIGHT side content, then the status should be CREATED.
+        // when executing the post endpoint to save the DiffData containing the RIGHT side content
         Response response = apiPost(diffDataWithRightContent);
+
+        // then the status should be CREATED.
         response.then().assertThat().statusCode(HttpStatus.SC_CREATED);
-        DiffData savedDto = stringJsonToDiffData(response.getBody().asString());
-
-        // and the saved DiffData should contain the left content of the respective id
-        assertEquals(diffDataWithRightContent.getRightSide(), savedDto.getRightSide());
     }
-
 
     @Test
     public void executeRunDifferentiator_RightAndLeftSideNotNull_success() throws IOException {

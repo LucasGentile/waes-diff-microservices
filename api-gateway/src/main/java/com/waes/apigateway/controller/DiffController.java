@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-
 @AllArgsConstructor
 @RestController
 @RequestMapping("/v1")
@@ -15,14 +13,7 @@ class DiffController {
 
     private final DiffClient diffClient;
 
-    @GetMapping("/diffs")
-    @CrossOrigin
-    public Collection<Diff> allDiffs() {
-        return diffClient.getAllDiffs().getBody();
-    }
-
     @GetMapping("/diff/{id}")
-    @CrossOrigin
     public Diff getDiff(@PathVariable Long id) {
         return diffClient.getDiff(id).getBody();
     }
