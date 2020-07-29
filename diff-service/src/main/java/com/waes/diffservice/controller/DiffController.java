@@ -1,7 +1,7 @@
 package com.waes.diffservice.controller;
 
 import com.waes.diffservice.data.DiffData;
-import com.waes.diffservice.service.DiffPersistService;
+import com.waes.diffservice.service.DiffPersistenceService;
 import com.waes.diffservice.service.DiffService;
 import javassist.NotFoundException;
 import lombok.extern.java.Log;
@@ -20,12 +20,12 @@ import java.util.logging.Level;
 public class DiffController {
 
     private final DiffService diffService;
-    private final DiffPersistService diffPersistService;
+    private final DiffPersistenceService diffPersistenceService;
 
     @Autowired
-    public DiffController(DiffService diffService, DiffPersistService diffPersistService) {
+    public DiffController(DiffService diffService, DiffPersistenceService diffPersistenceService) {
         this.diffService = diffService;
-        this.diffPersistService = diffPersistService;
+        this.diffPersistenceService = diffPersistenceService;
     }
 
     @GetMapping("/{id}")
@@ -44,7 +44,7 @@ public class DiffController {
     public ResponseEntity<?> saveOrUpdate(@RequestBody DiffData diffData, UriComponentsBuilder ucBuilder) {
         DiffData savedDiff;
         try {
-            savedDiff = diffPersistService.save(diffData);
+            savedDiff = diffPersistenceService.save(diffData);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(ucBuilder.path("/diffs/{id}").buildAndExpand(savedDiff.getId()).toUri());

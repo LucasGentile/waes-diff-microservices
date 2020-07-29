@@ -15,12 +15,12 @@ import java.util.Optional;
 @Log
 @Service
 @NoArgsConstructor
-public class DiffPersistService {
+public class DiffPersistenceService {
 
     private DiffRepository diffRepository;
 
     @Autowired
-    public DiffPersistService(DiffRepository diffRepository) {
+    public DiffPersistenceService(DiffRepository diffRepository) {
         this.diffRepository = diffRepository;
     }
 
