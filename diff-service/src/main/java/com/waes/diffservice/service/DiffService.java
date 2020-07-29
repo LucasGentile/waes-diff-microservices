@@ -11,12 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.DatatypeConverter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -68,24 +65,6 @@ public class DiffService {
 
             return diffInsight(DiffDataConverter.convert(diff));
         }
-    }
-
-    public Collection<DiffData> getAll() {
-        return diffRepository.findAll().stream().map(DiffDataConverter::convert).collect(Collectors.toList());
-    }
-
-    public String encodeBase64JsonData(String json) {
-        byte[] bytes = json.getBytes();
-        String jsonBase64Encoded = DatatypeConverter.printBase64Binary(bytes);
-        log.info("Encoded Json:\n" + jsonBase64Encoded + "\n");
-        return jsonBase64Encoded;
-    }
-
-    public String decodeBase64JsonData(String base64JsonEncoded) {
-        byte[] base64Decoded = DatatypeConverter.parseBase64Binary(base64JsonEncoded);
-        String base64DecodedString = new String(base64Decoded);
-        log.info("Decoded Json:\n" + base64DecodedString + "\n");
-        return base64DecodedString;
     }
 
     /**
