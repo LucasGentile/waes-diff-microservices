@@ -1,10 +1,9 @@
-package com.waes.diffservice.service;
+package com.waes.diffservice.validation;
 
 import com.waes.diffservice.data.DiffData;
 import org.junit.Test;
 
-import static com.waes.diffservice.utils.TestUtils.createDiffData;
-import static com.waes.diffservice.utils.TestUtils.encodeBase64String;
+import static com.waes.diffservice.utils.TestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -13,7 +12,7 @@ public class DiffDataValidationTest {
     @Test
     public void validateDiffDataWithBothSides_noExceptions() {
         // given
-        DiffData data = createDiffData(10L, encodeBase64String("ABC"), encodeBase64String("ABB"));
+        DiffData data = createDiffData(getRandomId(), encodeBase64String("ABC"), encodeBase64String("ABB"));
 
         // when
         DiffDataValidation.validate(data);
@@ -24,7 +23,7 @@ public class DiffDataValidationTest {
     @Test
     public void validateDiffDataWithLeftSideOnly_noExceptions() {
         // given
-        DiffData data = createDiffData(10L, encodeBase64String("ABC"), null);
+        DiffData data = createDiffData(getRandomId(), encodeBase64String("ABC"), null);
 
         // when
         DiffDataValidation.validate(data);
@@ -35,7 +34,7 @@ public class DiffDataValidationTest {
     @Test
     public void validateDiffDataWithRightSideOnly_noExceptions() {
         // given
-        DiffData data = createDiffData(10L, null, encodeBase64String("ABB"));
+        DiffData data = createDiffData(getRandomId(), null, encodeBase64String("ABB"));
 
         // when
         DiffDataValidation.validate(data);
@@ -46,7 +45,7 @@ public class DiffDataValidationTest {
     @Test
     public void validateDiffDataWithoutBothSides_illegalArgumentException() {
         // given
-        DiffData data = createDiffData(10L, null, null);
+        DiffData data = createDiffData(getRandomId(), null, null);
         String expectedErrorMessage;
 
         // when
@@ -61,7 +60,7 @@ public class DiffDataValidationTest {
     public void validateDiffDataLeftSideNotBase64Encoded_illegalArgumentException() {
         // given
         String notEncodedInput = "!@#$@#%_&";
-        DiffData data = createDiffData(10L, notEncodedInput, encodeBase64String("ABB"));
+        DiffData data = createDiffData(getRandomId(), notEncodedInput, encodeBase64String("ABB"));
         String expectedErrorMessage;
 
         // when
@@ -76,7 +75,7 @@ public class DiffDataValidationTest {
     public void validateDiffDataRightSideNotBase64Encoded_illegalArgumentException() {
         // given
         String notEncodedInput = "!@#$@#%_&";
-        DiffData data = createDiffData(10L, encodeBase64String("ABB"), notEncodedInput);
+        DiffData data = createDiffData(getRandomId(), encodeBase64String("ABB"), notEncodedInput);
         String expectedErrorMessage;
 
         // when

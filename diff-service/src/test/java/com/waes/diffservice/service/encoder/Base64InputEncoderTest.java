@@ -1,7 +1,5 @@
-package com.waes.diffservice.service;
+package com.waes.diffservice.service.encoder;
 
-import com.waes.diffservice.service.encoder.Base64InputEncoder;
-import com.waes.diffservice.service.encoder.InputEncoder;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

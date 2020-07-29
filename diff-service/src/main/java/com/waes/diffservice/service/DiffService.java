@@ -5,6 +5,7 @@ import com.waes.diffservice.data.DiffData;
 import com.waes.diffservice.enums.DiffType;
 import com.waes.diffservice.model.Diff;
 import com.waes.diffservice.repository.DiffRepository;
+import com.waes.diffservice.validation.DiffServiceValidation;
 import javassist.NotFoundException;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Log
 @Service
@@ -28,20 +30,13 @@ public class DiffService {
     }
 
     public DiffData getDiff(Long id) throws NotFoundException {
-        Diff diff = diffRepository.findById(id).orElse(null);
+        Optional<Diff> persistedDiff = diffRepository.findById(id);
 
-        if (diff == null) {
-            throw new NotFoundException("DiffData with id " + id + " not found.");
-        } else {
-            if (diff.getLeftSide() == null) {
-                throw new NotFoundException("DiffData with id " + id + " missing LEFT side.");
-            }
-            if (diff.getRightSide() == null) {
-                throw new NotFoundException("DiffData with id " + id + " missing RIGHT side.");
-            }
+        Diff diff = persistedDiff.orElseThrow(() -> new NotFoundException("Diff with id '" + id + "' not found."));
 
-            return diffInsight(DiffDataConverter.convert(diff));
-        }
+        DiffServiceValidation.validate(id, diff);
+
+        return diffInsight(DiffDataConverter.convert(diff));
     }
 
     /**

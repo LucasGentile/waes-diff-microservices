@@ -1,4 +1,4 @@
-package com.waes.diffservice.service;
+package com.waes.diffservice.validation;
 
 import com.waes.diffservice.data.DiffData;
 import com.waes.diffservice.service.encoder.Base64InputEncoder;
@@ -7,7 +7,7 @@ import com.waes.diffservice.service.encoder.InputEncoder;
 public class DiffDataValidation {
     private final static InputEncoder base64InputEncoder = new Base64InputEncoder();
 
-    protected static void validate(DiffData diffData) {
+    public static void validate(DiffData diffData) {
         if (diffData.getLeftSide() == null && diffData.getRightSide() == null) {
             throw new IllegalArgumentException("Both Diff sides are empty.");
         }

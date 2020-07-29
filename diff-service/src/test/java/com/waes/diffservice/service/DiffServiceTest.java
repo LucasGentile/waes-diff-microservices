@@ -14,8 +14,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Optional;
 
 import static com.waes.diffservice.utils.TestUtils.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 /**
@@ -31,31 +33,18 @@ public class DiffServiceTest {
     @Mock
     private DiffRepository diffRepository;
 
-    @Test(expected = NotFoundException.class)
-    public void executeGetDiff_DiffNotFound_NotFoundException() throws Exception {
-        diffService.getDiff(getRandomId());
-    }
+    @Test
+    public void executeGetDiff_DiffNotFound_NotFoundException() {
+        // given
+        Long id = getRandomId();
+        String expectedErrorMessage;
 
-    @Test(expected = NotFoundException.class)
-    public void executeGetDiff_DiffLeftSideNull_NotFoundException() throws Exception {
-        Long diffId = getRandomId();
+        // when
+        expectedErrorMessage = assertThrows(NotFoundException.class, () -> diffService.getDiff(id))
+                .getMessage();
 
-        Diff diffLeftSideNull = createDiff(diffId, null, encodeBase64String("test"));
-
-        when(diffRepository.findById(diffId)).thenReturn(Optional.of(diffLeftSideNull));
-
-        diffService.getDiff(diffId);
-    }
-
-    @Test(expected = NotFoundException.class)
-    public void executeGetDiff_DiffRightSideNull_NotFoundException() throws Exception {
-        Long diffId = getRandomId();
-
-        Diff diffRightSideNull = createDiff(diffId, encodeBase64String("test"), null);
-
-        when(diffRepository.findById(diffId)).thenReturn(Optional.of(diffRightSideNull));
-
-        diffService.getDiff(diffId);
+        // then
+        assertThat(expectedErrorMessage).isEqualTo("Diff with id '" + id + "' not found.");
     }
 
     @Test
