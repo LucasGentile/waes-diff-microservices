@@ -27,7 +27,6 @@ public class TestUtils {
 
     public static String encodeBase64String(String simpleText) {
         byte[] base64EncodedBytes = Base64.getEncoder().encode(simpleText.getBytes());
-
         return new String(base64EncodedBytes);
     }
 

@@ -7,7 +7,7 @@ import com.waes.diffservice.model.Diff;
 import com.waes.diffservice.repository.DiffRepository;
 import javassist.NotFoundException;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Log
 @Service
-@Slf4j
 @NoArgsConstructor
 public class DiffService {
 
@@ -25,29 +25,6 @@ public class DiffService {
     @Autowired
     public DiffService(DiffRepository diffRepository) {
         this.diffRepository = diffRepository;
-    }
-
-    /**
-     * @param id       Diff id
-     * @param diffData Diff object to be saved
-     * @return Saved Diff data object
-     */
-    public DiffData save(Long id, DiffData diffData) {
-        Diff diff = diffRepository.findById(id).orElse(null);
-
-        if (diff == null) {
-            diff = new Diff();
-            diff.setId(id);
-        }
-
-        if (diffData.getLeftSide() != null) {
-            diff.setLeftSide(diffData.getLeftSide());
-        }
-
-        if (diffData.getRightSide() != null) {
-            diff.setRightSide(diffData.getRightSide());
-        }
-        return DiffDataConverter.convert(diffRepository.save(diff));
     }
 
     public DiffData getDiff(Long id) throws NotFoundException {

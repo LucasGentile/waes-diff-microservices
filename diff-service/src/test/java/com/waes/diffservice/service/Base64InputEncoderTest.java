@@ -2,16 +2,12 @@ package com.waes.diffservice.service;
 
 import com.waes.diffservice.service.encoder.Base64InputEncoder;
 import com.waes.diffservice.service.encoder.InputEncoder;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class Base64InputEncoderTest {
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
-
     InputEncoder inputEncoder;
 
     public Base64InputEncoderTest() {
@@ -76,12 +72,13 @@ public class Base64InputEncoderTest {
     public void decodeInvalidInput_returnInputDecoded() {
         // given
         String input = "$&&%¨&#*@+_";
-        exceptionRule.expect(IllegalArgumentException.class);
-        exceptionRule.expectMessage("Input is not in Base64 format: " + input);
+        String expectedErrorMessage;
 
         // when
-        inputEncoder.decode(input);
+        expectedErrorMessage = assertThrows(IllegalArgumentException.class, () -> inputEncoder.decode(input))
+                .getMessage();
 
-        // then exception is thrown
+        // then
+        assertThat(expectedErrorMessage).isEqualTo("Input is not in Base64 format: " + input);
     }
 }
