@@ -21,4 +21,8 @@ public class Diff {
 
     @Lob
     private String rightSide;
+
+    public Diff(Long id) {
+        this.id = id;
+    }
 }

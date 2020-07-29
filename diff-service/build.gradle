@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.5.RELEASE'
+	id 'org.springframework.boot' version '2.3.2.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 }
@@ -23,7 +23,7 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "Hoxton.SR3")
+	set('springCloudVersion', "Hoxton.SR6")
 }
 
 dependencies {
@@ -39,7 +39,8 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-    testImplementation('junit:junit:4.12')
+	testImplementation('com.sun.xml.bind:jaxb-osgi:2.3.3')
+	testImplementation('junit:junit:4.13')
 	testCompile('io.rest-assured:rest-assured:3.0.3')
 }
 

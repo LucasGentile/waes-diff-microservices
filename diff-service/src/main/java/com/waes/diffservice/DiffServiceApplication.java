@@ -20,9 +20,9 @@ public class DiffServiceApplication {
 
     @Bean
     ApplicationRunner init(DiffRepository repository) {
-        Diff diff1 = new Diff(1L, "ABC", "ABC");
-        Diff diff2 = new Diff(2L, "AAA", "ABA");
-        Diff diff3 = new Diff(3L, "Abb", "BAA");
+        Diff diff1 = new Diff(1L, "QUJDREU=", "QUJDREU=");
+        Diff diff2 = new Diff(2L, "QUJCQkI=", "QUJDQ0I=");
+        Diff diff3 = new Diff(3L, "QUFBQUE=", "QkJCQkI=");
         return args -> {
             repository.saveAll(Arrays.asList(diff1, diff2, diff3));
             repository.findAll().forEach(System.out::println);
