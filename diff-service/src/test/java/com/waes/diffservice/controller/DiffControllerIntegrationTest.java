@@ -86,8 +86,8 @@ public class DiffControllerIntegrationTest {
         assertEquals(data.getLeftSide(), dataResult.getLeftSide());
         assertEquals(data.getRightSide(), dataResult.getRightSide());
         assertEquals(DiffType.DIFF, dataResult.getType());
-        assertNotNull(dataResult.getInsight());
-        assertEquals("[5-7, 9-11]", dataResult.getInsight());
+        assertNotNull(dataResult.getInsights());
+        assertEquals("[5-7, 9-11]", dataResult.getInsightsAsString());
     }
 
     private Response apiPost(DiffData data) {

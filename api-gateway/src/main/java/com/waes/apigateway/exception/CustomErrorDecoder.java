@@ -14,6 +14,8 @@ public class CustomErrorDecoder implements ErrorDecoder {
                 return new IllegalArgumentException("Unprocessable Entity.");
             case 404:
                 return new NoSuchElementException("Entity not found.");
+            case 406:
+                return new IllegalStateException("Entity is incomplete for operation, please check.");
             default:
                 return new Exception("Internal error");
         }

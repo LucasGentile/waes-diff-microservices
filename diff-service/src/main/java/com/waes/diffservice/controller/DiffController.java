@@ -34,6 +34,9 @@ public class DiffController {
         try {
             diffData = diffService.getDiff(id);
             return new ResponseEntity<>(diffData, HttpStatus.OK);
+        } catch (IllegalStateException e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         } catch (NotFoundException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
